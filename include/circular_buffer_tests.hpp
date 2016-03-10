@@ -30,7 +30,4 @@ void test_circular_buffer_push_back_performance();
 void test_circular_buffer_output();
 
 
-
-
-
 #endif // !CIRCULAR_BUFFER_TESTS_GENERIC_PROGRAMMING
