@@ -36,7 +36,7 @@ bool test_circular_buffer_push_back()
     cbuf.push_back(2);
     cbuf.push_back(3);
     result = result && cbuf[0] == 1 && cbuf[1] == 2 && cbuf[2] == 3 && cbuf.size() == 3;
-    
+
     for (int i = 0; i < 8; ++i) {
         cbuf.push_back(100);
     }
@@ -54,15 +54,15 @@ bool test_circular_buffer_pop_front()
     cbuf.push_back(2);
     cbuf.push_back(3);
     result = result && (cbuf.size() == 3) && cbuf.front() == 1;
-    
+
     cbuf.pop_front();
     result = result && (cbuf.size() == 2) && cbuf.front() == 2;
-    
+
     for (int i = 0; i < 15; ++i) {
         cbuf.push_back(99);
     }
     result = result && (cbuf.size() == 10);
-    
+
     for (int i = 0; i < 10; ++i) {
         cbuf.pop_front();
     }
@@ -91,19 +91,19 @@ bool test_circular_buffer_random_access()
 {
     circular_buffer<int> cbuf(10);
     bool result = true;
-    
+
     for (int i = 0; i < 10; ++i) {
         cbuf.push_back(i);
     }
     for (int i = 0; i < 10; ++i) {
         result = result && cbuf[i] == i;
     }
-    
+
     for (int i = 30; i < 45; ++i) {
         cbuf.push_back(i);
     }
     for (int i = 35; i < 45; ++i) {
-        result = result && cbuf[i - 35] ==  i;
+        result = result && cbuf[i - 35] == i;
     }
 
     return result;
@@ -122,7 +122,7 @@ bool test_circular_buffer_reserve()
         result = result && cbuf[i] == i;
     }
     result = result && cbuf.capacity() == 20 && cbuf.size() == 10;
-    
+
     for (int i = 0; i < 10; ++i) {
         cbuf.push_back(i);
     }
@@ -225,7 +225,7 @@ bool test_circular_buffer_copy_and_assignment()
         result = result && cbuf2[i] == 100;
     }
     result = result && cbuf2.size() == 8;
-    
+
     for (int i = 0; i < 8; ++i) {
         cbuf2.push_back(90);
     }
@@ -331,4 +331,82 @@ void test_circular_buffer_output()
     cout << "Expected: 99, 99, 88, 88, 88, 88, 88\n";
     cout << "Actual: " << cbuf;
     cout << "Size: " << cbuf.size() << "\nCapacity: " << cbuf.capacity() << '\n';
+}
+
+bool test_circular_buffer_iterator()
+{
+    return test_circular_buffer_iterator_regularity() 
+           && test_circular_buffer_iterator_element_access()
+           && test_circular_buffer_iterator_movement();
+}
+
+bool test_circular_buffer_iterator_regularity()
+{
+    bool result = true;
+
+    //circular_buffer<int> cb(10);
+    //circular_buffer_iterator<circular_buffer<int>> iter1;
+    //circular_buffer_iterator<circular_buffer<int>> iter2(cb, 0);
+    //circular_buffer_iterator<circular_buffer<int>> iter3(cb, 0);
+    //circular_buffer_iterator<circular_buffer<int>> iter4(cb, 1);
+    //
+    //result = result && (iter1 == iter1);
+    //result = result && !(iter1 != iter1);
+    //result = result && (iter2 == iter3);
+    //result = result && (iter3 != iter4);
+
+    return result;
+}
+
+bool test_circular_buffer_iterator_element_access()
+{
+    bool result = true;
+
+    //circular_buffer<int> cb(10);
+    //for (int i = 0; i != cb.capacity(); ++i) {
+    //    cb.push_back(i);
+    //}
+    //circular_buffer_iterator<circular_buffer<int>> iter1(cb, 0);
+    //circular_buffer_iterator<circular_buffer<int>> iter2(cb, 9);
+    //
+    //result = result && (*iter1 == 0);
+    //(*iter1) = 10;
+    //result = result && (*iter1 == 10);
+    //result = result && (*iter2 == 9);
+    //(*iter2) = 10;
+    //result = result && (*iter2 == 10);
+    //result = result && (*iter1 == *iter2);
+    //result = result && (iter1 != iter2);
+
+    return result;
+}
+
+bool test_circular_buffer_iterator_movement()
+{
+    bool result = true;
+
+    //circular_buffer<int> cb(10);
+    //for (int i = 0; i != cb.capacity(); ++i) {
+    //    cb.push_back(i);
+    //}
+    //circular_buffer_iterator<circular_buffer<int>> iter1(cb, 0);
+    //circular_buffer_iterator<circular_buffer<int>> iter2(cb, 9);
+    //
+    //int j = 0;
+    //while (iter1 != iter2) {
+    //    result = result && (*iter1 == j);
+    //    ++iter1;
+    //    ++j;
+    //}
+    //result = result && (*iter1 == *iter2);
+    //
+    //auto iter3 = iter2++;
+    //result = result && (*iter3 == *iter1);
+    //--iter2;
+    //result = result && (*iter3 == *iter2);
+    //
+    //*++iter2 = 100;
+    //result = result && (*iter2 == 100);
+    //
+    return result;
 }

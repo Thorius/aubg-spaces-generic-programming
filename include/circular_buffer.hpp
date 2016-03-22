@@ -317,5 +317,31 @@ std::ostream& operator<<(std::ostream& out, const circular_buffer<T>& buf)
 }
 
 
+/// Steps for creating an STL complaint iterator
+//  1) Setup associated types.
+//  2) Provide appropriate constructors.
+//  3) Refine to regular type.
+//  4) Refine to trivial iterator.
+//     Provide element access: dereference, member access.
+//  5) Refine to input iterator.
+//     Provide post and pre increment.
+//  6) Refine to bidirectional iterator.
+//     Provide post and pre decrement.
+//  7) Refine to random access iterator.
+//     Provide arithmetic operators with the difference type
+//     along with some other utility functions.
+//  8) Return to the circular buffer class and provide factory functions
+//     for the begin and end of the container.
+
+
+
+class circular_buffer_iterator {
+public:
+    
+public:
+    
+
+};
+
 
 #endif //!CIRCULAR_BUFFER_GENERIC_PROGRAMMING

@@ -29,5 +29,14 @@ void test_circular_buffer_push_back_performance();
 
 void test_circular_buffer_output();
 
+bool test_circular_buffer_iterator();
+
+bool test_circular_buffer_iterator_regularity();
+
+bool test_circular_buffer_iterator_element_access();
+
+bool test_circular_buffer_iterator_movement();
+
+
 
 #endif // !CIRCULAR_BUFFER_TESTS_GENERIC_PROGRAMMING
