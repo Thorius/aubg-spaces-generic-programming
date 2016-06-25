@@ -20,6 +20,9 @@
 /// For now, the bellow implementation lacks some important parts in order top be qualified to be a container
 /// (namely iterators) but we will fix this later on.
 
+template<typename CB>
+class circular_buffer_iterator;
+
 template<typename T>
 // requires SemiRegular<T>{}
 class circular_buffer {
@@ -33,6 +36,7 @@ public:
     using const_pointer = const T*;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
+    using iterator = circular_buffer_iterator<self_type>;
 public:
     // We define several constructors bellow.
     circular_buffer()
@@ -87,6 +91,16 @@ public:
         delete[] array_;
     }
     
+    iterator begin()
+    {
+        return iterator(*this, 0);
+    }
+
+    iterator end()
+    {                                     
+        return iterator(*this, size());
+    }
+
     // Bellow are methods for accessing or modifying the container.
     // We will use a new syntax for expressing preconditions and postconditions:
     // [[expects: (boolean expression)]] for preconditions and
@@ -333,13 +347,85 @@ std::ostream& operator<<(std::ostream& out, const circular_buffer<T>& buf)
 //  8) Return to the circular buffer class and provide factory functions
 //     for the begin and end of the container.
 
-
-
+template<typename CB>
 class circular_buffer_iterator {
 public:
-    
+    // Utility types
+    using container_type = CB;
+    using self_type = circular_buffer_iterator<CB>;
+    // The following associated types are required for the operation of each iterator.
+    using value_type = typename CB::value_type;
+    using difference_type = typename CB::difference_type;
+    using pointer = typename CB::pointer;
+    using reference = typename CB::reference;
+    using iterator_category = std::random_access_iterator_tag;
 public:
-    
+    circular_buffer_iterator()
+        : cb_ptr_(nullptr), index_(0)
+    {}
+
+    circular_buffer_iterator(container_type& cb, difference_type index)
+        : cb_ptr_(&cb), index_(index)
+    {}
+
+    friend
+    bool operator==(const self_type& x, const self_type& y)
+    {
+        return (x.cb_ptr_ == y.cb_ptr_) && (x.index_ == y.index_);
+    }
+    friend
+    bool operator!=(const self_type& x, const self_type& y)
+    {
+        return !(x == y);
+    }
+
+    // Iterator element access.
+
+    reference operator*()
+    {
+        return buffer()[index_];
+    }
+    pointer operator->()
+    {
+        return &(this->operator*());
+    }
+
+    // Iterator repositioning.
+
+    self_type& operator++()
+    {
+        ++index_;
+        return *this;
+    }
+    self_type operator++(int)
+    {
+        self_type ret { *this };
+        ++(*this);
+        return ret;
+    }
+    self_type& operator--()
+    {
+        --index_;
+        return *this;
+    }
+    self_type operator--(int)
+    {
+        self_type ret { *this };
+        --(*this);
+        return ret;
+    }
+private:
+    container_type& buffer()
+    {
+        return *cb_ptr_;
+    }
+    const container_type& buffer() const
+    {
+        return *cb_ptr_;
+    }
+
+    container_type* cb_ptr_;
+    difference_type index_;
 
 };
 
